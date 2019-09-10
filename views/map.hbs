@@ -1,5 +1,9 @@
 <h1>My first map</h1>
 
+<ul>{{#each places as |place|}}
+<li>{{place.name}}</li>
+{{/each}}</ul>
+
 <div id="map" style="width: 800px; height: 600px"></div>
 
 <script>
@@ -36,5 +40,18 @@
           .addTo(map);
       });
     }
+
+    let locations = [];
+    let names = [];
+    {{#each places as |place|}}
+      locations.push({{{place.location}}});
+      names.push("{{place.name}}");
+    {{/each}}
+    locations.forEach((place, i)=>{
+      let [lng,lat] = place.coordinates
+      let place_position = [lng, lat];
+      let popup = new mapboxgl.Popup().setText(names[i]);
+      let marker = new mapboxgl.Marker().setLngLat(place_position).setPopup(popup).addTo(map);
+    });
 
 </script>
